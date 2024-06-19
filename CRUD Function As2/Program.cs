@@ -22,35 +22,35 @@ namespace CRUD_Function_As2
 
                     if (PersonInput[0].ToLower() == "add")
                     {
-                        AddUser(PersonRepo);
+                        AddUser(PersonRepository);
                     }
-                    else if (userInput[0].ToLower() == "list")
+                    else if (PersonInput[0].ToLower() == "list")
                     {
-                        ListUsers(userRepository);
+                        ListUsers(PersonRepository);
                     }
-                    else if (userInput[0].ToLower() == "edit")
+                    else if (PersonInput[0].ToLower() == "edit")
                     {
-                        if (userInput.Length > 1 && int.TryParse(userInput[1], out int editId))
+                        if (PersonInput.Length > 1 && int.TryParse(PersonInput[1], out int editId))
                         {
-                            EditUser(userRepository, editId);
+                            EditUser(PersonRepository, editId);
                         }
                         else
                         {
                             Console.WriteLine("Invalid command. Use: edit <id>");
                         }
                     }
-                    else if (userInput[0].ToLower() == "delete")
+                    else if (PersonInput[0].ToLower() == "delete")
                     {
-                        if (userInput.Length > 1 && int.TryParse(userInput[1], out int deleteId))
+                        if (PersonInput.Length > 1 && int.TryParse(PersonInput[1], out int deleteId))
                         {
-                            DeleteUser(userRepository, deleteId);
+                            DeleteUser(PersonRepository, deleteId);
                         }
                         else
                         {
                             Console.WriteLine("Invalid command. Use: delete <id>");
                         }
                     }
-                    else if (userInput[0].ToLower() == "exit")
+                    else if (PersonInput[0].ToLower() == "exit")
                     {
                         exit = true;
                     }
@@ -62,22 +62,22 @@ namespace CRUD_Function_As2
             }
         }
 
-        static void AddUser(IUserRepository userRepository)
+        static void AddUser(IPersonRepo personRepository)
         {
             Console.Write("Enter Name: ");
             string name = Console.ReadLine();
             Console.Write("Enter Email: ");
             string email = Console.ReadLine();
 
-            var user = new User { Name = name, Email = email };
-            userRepository.AddUser(user);
+            var person = new Person { Name = name, Email = email };
+            personRepository.AddUser(person);
             Console.WriteLine($"User {name} added.");
         }
 
-        static void ListUsers(IUserRepository userRepository)
+        static void ListUsers(IPersonRepo personRepository)
         {
-            var users = userRepository.GetAllUsers();
-            if (!users.Any())
+            var persons = personRepository.GetAllUsers();
+            if (!persons.Any())
             {
                 Console.WriteLine("No users found.");
             }
@@ -85,26 +85,26 @@ namespace CRUD_Function_As2
             {
                 Console.WriteLine("ID\tName\t\tEmail");
                 Console.WriteLine("--------------------------------------------------");
-                foreach (var user in users)
+                foreach (var person in persons)
                 {
-                    Console.WriteLine($"{user.Id}\t{user.Name}\t\t{user.Email}");
+                    Console.WriteLine($"{person.Id}\t{person.Name}\t\t{person.Email}");
                 }
             }
         }
 
-        static void EditUser(IUserRepository userRepository, int id)
+        static void EditUser(IPersonRepo personRepository, int id)
         {
-            var user = userRepository.GetUserById(id);
-            if (user != null)
+            var person = personRepository.GetUserById(id);
+            if (person != null)
             {
                 Console.Write("Enter new Name: ");
                 string updatedName = Console.ReadLine();
                 Console.Write("Enter new Email: ");
                 string updatedEmail = Console.ReadLine();
 
-                user.Name = updatedName;
-                user.Email = updatedEmail;
-                userRepository.UpdateUser(user);
+                person.Name = updatedName;
+                person.Email = updatedEmail;
+                personRepository.UpdateUser(person);
                 Console.WriteLine($"User updated.");
             }
             else
@@ -113,12 +113,12 @@ namespace CRUD_Function_As2
             }
         }
 
-        static void DeleteUser(IUserRepository userRepository, int id)
+        static void DeleteUser(IPersonRepo personRepository, int id)
         {
-            var user = userRepository.GetUserById(id);
-            if (user != null)
+            var person = personRepository.GetUserById(id);
+            if (person != null)
             {
-                userRepository.DeleteUser(id);
+                personRepository.DeleteUser(id);
                 Console.WriteLine($"User deleted.");
             }
             else
